@@ -1,0 +1,112 @@
+{% extends "layout.html" %}
+
+{% block pageInfo %}
+	<!-- hidden fields used for javascript -->
+	<!-- This span used to store static page name to be used for the javascript dictionary -->
+	<span id="page-name" style="display: none">users</span>
+	 <!-- This span used to store static privilege (True or false) to be used to hide page access in nav bar -->
+  	<span id="has-privilege" style="display: none">{{has_privilege}}</span>
+	<!-- This span used to store language displayed to user -->
+  	<span id="page-language" style="display: none">{{language}}</span>
+{% endblock %}
+
+{% block formBody %}
+	<!-- hidden fields (Database ID) to be used by flask for updating users-->
+	<div style="display: none">
+	    <label class="form-control-label text-info mb-2" for="admin-databseId">ID</label>
+	    <input type="text" class="form-control" id="admin-databseId" name="databaseId" >
+	</div>
+	<!-- hidden fields (page name) to be used by flask for knowing the requesting page -->
+	<div style="display: none">
+	    <label class="form-control-label text-info mb-2" for="page-name">Page Name</label>
+	    <input type="text" class="form-control" id="page-name" name="page_name" value="admin_users" >
+	</div>
+	<!-- User Name -->
+    <div class="form-group text-center"> 
+	    <label class="form-control-label text-info mb-2 translate" data-key="uploader" for="user-user-name">Name</label>
+	    <input type="text" class="form-control" id="user-user-name" name="user_name">
+	</div>
+	<!-- user ID -->
+    <div class="form-group text-center"> 
+	    <label class="form-control-label text-info mb-2 translate" data-key="login_id" for="user-user-id">Login ID</label>
+	    <input type="text" class="form-control" id="user-user-id" name="user_id">
+	</div>
+	<!-- user Password -->
+    <div class="form-group text-center"> 
+	    <label class="form-control-label text-info mb-2 translate" data-key="pass" for="user-user-password">Password</label>
+	    <input type="text" class="form-control" id="user-user-password" name="password">
+	</div>
+	<!-- City Side -->
+    <div class="form-group text-center"> 
+		<label class="form-control-label text-info mb-2 translate" data-key="city_side" for="user-city-side">City Side</label>
+		<select class="form-control" id="user-city-side" name="city_side">
+			<option value=""></option>
+			{% for cityside in citysides %}
+			    <option value="{{cityside.id}}">{{cityside.cityside}}</option>
+		    {% endfor %}
+		</select>    
+	</div>
+	<!-- Privilege -->
+    <div class="form-group text-center"> 
+		<label class="form-control-label text-info mb-2 translate" data-key="privilege" for="user-privilege">Privilege</label>
+		<select class="form-control" id="user-privilege" name="privilege">
+			<option value=""></option>
+			{% for privilege in privileges %}
+			    <option value="{{privilege.id}}">{{privilege.privilege}}</option>
+		    {% endfor %}
+		</select>             
+	</div>
+	<!-- Language -->
+    <div class="form-group text-center"> 
+		<label class="form-control-label text-info mb-2 translate" data-key="language" for="user-language">Language</label>
+		<select class="form-control" id="user-language" name="language">
+			<option value=""></option>
+			{% for language in languages %}
+			    <option value="{{language.id}}">{{language.language}}</option>
+		    {% endfor %}
+		</select>             
+	</div>
+	<!-- buttons -->
+    <div class="form-group text-center"> 
+	    <button id="form-submit-button" type="submit" class="btn btn-secondary mt-4 translate" data-key="add" data-href="{{ url_for('adds') }}"> Add </button>
+		<a class="btn btn-secondary mt-4 translate" data-key="rst" href="{{ url_for('indexes', page_name='admin_users')}}" role="button">Reset</a>
+	</div>
+{% endblock %} 
+
+{% block userMessage %}
+    {{message}}
+{% endblock %}
+
+{% block pageTitle %}
+   <h1 class="translate d-none d-lg-block d-xl-block" data-key="users_btn"> Users</h1>
+{% endblock %}
+
+{% block tableHeader %}
+    <th scope="col" style="display: none">ID</th>
+    <th class="translate" data-key="uploader" scope="col">Name</th>
+    <th class="translate" data-key="city_side" scope="col">City Side</th>
+    <th class="translate" data-key="login_id" scope="col">Login ID</th>
+    <th class="translate" data-key="pass" scope="col">Pasword</th>
+    <th class="translate" data-key="c_date" scope="col">Creation Date</th>
+    <th class="translate" data-key="privilege" scope="col">Privilege</th>	        
+    <th class="translate" data-key="language" scope="col">Lanugage</th>
+    <th></th>
+    <th></th>				        				        
+{% endblock %}
+
+{% block tableBody %}
+	{% for uploader in uploaders %}
+		<tr class="data-row text-center">
+			<td style="display: none">{{uploader.id}}</td>
+			<td>{{uploader.name}}</td>
+			<td>{{uploader.cityside.cityside}}</td>
+			<td>{{uploader.userId}}</td>
+			<td>{{uploader.password}}</td>
+			<td>{{uploader.creationDate.strftime('%d-%m-%Y')}}</td>
+			<td>{{uploader.privilege.privilege}}</td>
+			<td>{{uploader.language.language}}</td>
+	        <td><button type="button" class="btn btn-outline-info row-edit-button translate" data-key="edit" data-href="{{ url_for('updates') }}">Edit</button></td>  
+	        <td><button type="button" class="btn btn-outline-info row-delete-button translate" data-key="del" data-href="{{ url_for('deletes', page_name='admin_users', db_id=uploader.id) }}" data-messageBody="Are you sure you want to delete user &#147 {{uploader.userId}} &#148 ?" data-messageTitle="Confirm Deletion" data-messageCancel="Cancel" data-messageContinue="Confirm" role="button" data-toggle="modal" data-backdrop="static" data-keyboard="false" data-target="#modal">Delete</button></td>
+		</tr>						
+	{% endfor %}
+{% endblock %}

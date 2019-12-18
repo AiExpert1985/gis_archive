@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
+	<!-- Manual CSS -->
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/styles.css') }}">
+
+	<title> GIS Archive </title>
+
+</head>
+
+<body>
+	<div class="container-fluid pt-4" 
+		style="
+		background-image: url({{ url_for('static', filename='img/login.PNG') }});   
+		height: 100vh; 
+		width: 100%;  
+		background-position: center; 
+		background-repeat: no-repeat; 
+		background-size: 100%;
+		">
+		<div class="row justify-content-center">
+			<div class="col-12 col-sm-5 col-md-3 mt-5">
+				<form class="form-design" action="{{url_for('initiate_seesion')}}" method="POST">
+					<div class="col-7 col-md-6 col-sm-5 mx-auto mb-4 mt-2">
+  						<img class="img-circle" id="login-form-img" src="{{url_for('static', filename='img/gis_logo.jpg')}}">
+					</div>
+					<div class="form-group">
+					    <label for="login-user-id">User ID</label>
+					    <input type="text" class="form-control" id="login-user-id" placeholder="Enter Your ID" name="userId" required>
+					</div>
+					<div class="form-group">
+					    <label for="login-user-password">Password</label>
+					    <input type="password" class="form-control" id="login-user-password" placeholder="Enter Your Password" name="password" required>
+					</div>
+					<div class="form-group  mt-5 mb-4">
+						<button id="form-submit-button" type="Submit" class="btn btn-info btn-block"> login </button>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+
+    <!-- Manual JavaScript -->
+    <script type="text/javascript" src="{{url_for('static', filename='js/scripts.js')}}"></script>
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+	<script type="text/javascript" src="{{url_for('static', filename='js/jquery.min.js')}}"></script>
+	<script type="text/javascript" src="{{url_for('static', filename='js/popper.min.js')}}"></script>
+	<script type="text/javascript" src="{{url_for('static', filename='js/bootstrap.min.js')}}"></script>
+
+</body>
+</html>

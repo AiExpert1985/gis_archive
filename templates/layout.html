@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
+	<!-- Manual CSS -->
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/styles.css') }}">
+
+	<title> GIS Archive</title>
+</head>
+
+<body>
+	<nav class="navbar navbar-expand-lg bg-dark navbar-dark sticky-top px-5">
+	  <a class="navbar-brand" href="#">
+	  	<img id="logo-sm-img" src="{{url_for('static', filename='img/gis_logo_trasparent.png')}}" class="mr-3 img-circle">
+	  	<span class="mx-1 translate" data-key="gis"> GIS Department</span>
+	  </a>
+		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+		    <span class="navbar-toggler-icon"></span>
+		</button>
+	  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+	    <ul class="navbar-nav" id="js-navbar-nav-lang-adjust">
+		<a class="nav-item nav-link hidden-for-unpriviledged translate" data-key="upload" href="{{ url_for('indexes', page_name='upload')}}">Upload</a>
+	      <li class="nav-item dropdown">
+	        <a class="nav-link dropdown-toggle hidden-for-unpriviledged translate" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-key="admin">
+				  Admin
+				</a>
+	        <div class="dropdown-menu bg-dark" aria-labelledby="navbarDropdown">
+			  <a class="dropdown-item translate text-primary" href="{{ url_for('indexes', page_name='admin_users')}}" data-key="users_btn">Users</a>
+			  <a class="dropdown-item translate text-primary" href="{{url_for('indexes', page_name='admin_files')}}" data-key="files_btn">Files</a>
+			  <a class="dropdown-item translate text-primary" href="{{url_for('indexes', page_name='admin_stations')}}" data-key="stations_btn">Stations</a>
+			  <a class="dropdown-item translate text-primary" href="{{url_for('indexes',page_name='admin_feeders')}}" data-key="feeders_btn">Feeders</a>
+	        </div>
+	      </li>
+	      <li>
+	      	<a class="nav-item nav-link" href="{{ url_for('logout')}}"><img id="logout-image" src="{{url_for('static', filename='img/logout_white.png')}}" ><span class="translate m-1" data-key="logout">Logout</span></a>
+	      </li>
+	    </ul>
+	  </div>
+	</nav>
+
+    <!-- Body container-->
+    <div class="container-fluid">
+    	<div class="row justify-content-center py-4">
+    		<div>
+     			{% block pageInfo %}
+				{% endblock %}   			
+    		</div>
+    		<!-- vertical section for vertical search forms or buttons -->
+			<div id="left-section" class="col-lg-3 col-md-6 col-sm-6 my-auto">
+				<form id="admin-form" action="#" method="post" enctype=multipart/form-data>
+					{% block formBody %}
+					{% endblock %}
+				</form>
+			</div>
+
+			<!-- Empty vertical section to separate the two main sections (form and table) -->
+			<!-- Displayed only in large screens -->
+			<div class="col-auto d-none d-lg-block d-xl-block">
+				<div id="vertical-line"></div>
+			</div>
+
+			<!-- vertical section for tables (and row forms)-->
+			<div id="right-section" class="col-lg-8 col-md-12 col-sm-12 my-auto">
+				<div class="row">
+					<div id="user-message" class="text-center alert alert-success col">
+						{% block userMessage %}
+						{% endblock %}
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-12 text-center">
+						{% block pageTitle %}
+						{% endblock %}
+					</div>
+				</div>
+				<div class="row mx-auto my-4 table-responsive">
+				    <table class="table table-sm text-center table-hover">
+				    	<thead>
+							<tr>
+								{% block tableHeader %}
+								{% endblock %}
+						    </tr>
+						</thead>
+						<tbody>
+								{% block tableBody %}
+								{% endblock %}
+						</tbody>
+					</table>					
+				</div>
+			</div>	
+		</div>
+	</div>
+	<!-- End -- Body container -->
+
+	<!-- Modal -->
+	<div class="modal fade" id="modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+	  <div class="modal-dialog modal-dialog-centered modal-sm" role="document">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <h5 class="modal-title" id="modal-title">add title here</h5>
+	        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+	          <span aria-hidden="true">&times;</span>
+	        </button>
+	      </div>
+	      <div id="modal-body" class="modal-body">
+	      </div>
+	      <div class="modal-footer">
+	        <button id="cancel-button" type="button" class="btn btn-secondary" data-dismiss="modal">add cancel here</button>
+	        <a id="confirm-button" class="btn btn-info" href="#" role="button">add confrimation here</a>
+	      </div>
+	    </div>
+	  </div>
+	</div>
+
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+	<script type="text/javascript" src="{{url_for('static', filename='js/jquery.min.js')}}"></script>
+	<script type="text/javascript" src="{{url_for('static', filename='js/popper.min.js')}}"></script>
+	<script type="text/javascript" src="{{url_for('static', filename='js/bootstrap.min.js')}}"></script>
+
+	<!-- handlebars templating language -->
+    <script type="text/javascript" src="{{url_for('static', filename='js/handlebars.js')}}"></script>
+    <!-- Manual JavaScript -->
+    <script type="text/javascript" src="{{url_for('static', filename='js/script.js')}}"></script>
+
+</body>
+</html>
+
+

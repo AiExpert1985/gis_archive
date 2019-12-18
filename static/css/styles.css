@@ -1,0 +1,33 @@
+/* images in navigatio bar */
+#logout-image {
+	width:25px;
+}
+#logo-sm-img{
+	width: 40px;
+}
+
+
+/* Login page */
+.form-design{
+	background: #ffff;
+	padding: 30px;
+	border-radius: 10px;
+	box-shadow: 0px 0px 10px 0px #000;
+}
+#login-form-img{
+	width: 130px;
+}
+
+/* Giving style to table header */
+thead {
+	color: #6b1a0b;
+	background-color: #fff7f6;
+	border-color: #fff7f6;
+}
+
+/* For drawing separating line between left and right sections */
+#vertical-line{
+	width: 1px;
+	height: 100%;
+	background-color: gray;
+}

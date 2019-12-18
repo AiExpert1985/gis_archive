@@ -1,0 +1,73 @@
+{% extends "layout.html" %}
+
+{% block pageInfo %}
+	<!-- hidden fields used for javascript -->
+	<!-- This span used to store static page name to be used for the javascript dictionary -->
+	<span id="page-name" style="display: none">stations</span>
+	<!-- This span used to store static privilege (True or false) to be used to hide page access in nav bar -->
+  	<span id="has-privilege" style="display: none">{{has_privilege}}</span>
+	<!-- This span used to store language displayed to user -->
+  	<span id="page-language" style="display: none">{{language}}</span>
+
+{% endblock %}
+
+{% block formBody %}
+	<!-- hidden fields (Database ID) to be used by flask for updating users-->
+	<div style="display: none">
+	    <label class="form-control-label text-info mb-2" for="admin-databseId">ID</label>
+	    <input type="text" class="form-control" id="admin-databseId" name="databaseId" >
+	</div>
+	<!-- hidden fields (page name) to be used by flask for knowing the requesting page -->
+	<div style="display: none">
+	    <label class="form-control-label text-info mb-2" for="page-name">Page Name</label>
+	    <input type="text" class="form-control" id="page-name" name="page_name" value="admin_stations">
+	</div>
+	<!-- Station Name -->
+    <div class="form-group text-center"> 
+	    <label class="form-control-label text-info mb-2 translate" data-key="station" for="station-station-name">Station Name</label>
+	    <input type="text" class="form-control" id="station-station-name" name="station_name">
+	</div>
+	<!-- City Side -->
+    <div class="form-group text-center"> 
+		<label class="form-control-label text-info mb-2 translate" data-key="city_side" for="station-city-side">City Side</label>
+		<select class="form-control" id="station-city-side" name="city_side">
+			<option value=""></option>
+			{% for cityside in citysides %}
+			    <option value="{{cityside.id}}">{{cityside.cityside}}</option>
+		    {% endfor %}
+		</select>
+	</div>
+	<!-- buttons -->
+    <div class="form-group text-center"> 
+	    <button id="form-submit-button" type="submit" class="btn btn-secondary mt-4 translate" data-key="add" data-href="{{ url_for('adds') }}"> Add </button>
+		<a class="btn btn-secondary mt-4 translate" data-key="rst" href="{{url_for('indexes',page_name='admin_stations')}}" role="button">Reset</a>
+	</div>
+{% endblock %} 
+
+{% block userMessage %}
+    {{message}}
+{% endblock %}
+
+{% block pageTitle %}
+   <h1 class="translate d-none d-lg-block d-xl-block" data-key="stations_btn"> Stations</h1>
+{% endblock %}
+
+{% block tableHeader %}
+    <th scope="col" style="display: none">ID</th>
+    <th class=" translate" data-key="station" scope="col">Station Name</th>
+    <th class=" translate" data-key="city_side" scope="col">City Side</th>
+    <th></th>
+    <th></th>      				        
+{% endblock %}
+
+{% block tableBody %}
+	{% for station in stations %}
+	  	<tr class="text-center">
+	  		<td style="display: none">{{station.id}}</td>
+	        <td>{{station.station}}</td>
+	        <td>{{station.cityside.cityside}}</td>			        
+	        <td><button type="button" class="btn btn-outline-info row-edit-button translate" data-key="edit" data-href="{{ url_for('updates') }}">Edit</button></td>  
+	        <td><button type="button" class="btn btn-outline-info row-delete-button translate" data-key="del" data-href="{{ url_for('deletes', page_name='admin_stations', db_id=station.id) }}" data-messageBody="Are you sure you want to delete station &#147 {{station.station}} &#148 ?" data-messageTitle="Confirm Deletion" data-messageCancel="Cancel" data-messageContinue="Confirm" role="button" data-toggle="modal" data-backdrop="static" data-keyboard="false" data-target="#modal">Delete</button></td>
+	    </tr>
+    {% endfor %}
+{% endblock %} 

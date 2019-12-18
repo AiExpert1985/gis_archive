@@ -1,0 +1,104 @@
+{% extends "layout.html" %}
+
+{% block pageInfo %}
+  <!-- hidden fields used for javascript -->
+  <!-- This span used to store static page name to be used for the javascript dictionary -->
+  <span id="page-name" style="display: none">upload</span>
+  <!-- This span used to store static privilege (True or false) to be used to hide page access in nav bar -->
+  <span id="has-privilege" style="display: none">{{has_privilege}}</span>
+    <!-- This span used to store language displayed to user -->
+    <span id="page-language" style="display: none">{{language}}</span>
+{% endblock %}
+
+
+{% block formBody %}
+<!-- hidden fields (page name) to be used by flask for knowing the requesting page -->
+<div style="display: none">
+    <label class="form-control-label text-info mb-2" for="page-name">Page Name</label>
+    <input type="text" class="form-control" id="page-name" name="page_name" value="upload" >
+</div>
+<!-- File Upload -->
+<div class="form-group">
+    <div class="custom-file">
+        <input type="file" class="custom-file-input" id="file" name="file">
+        <label class="custom-file-label translate" for="fle" data-key="file_upload">Choose file...</label>
+    </div>
+</div>
+
+    <!-- Substation selection drop-down list -->
+    <div class="form-group text-center">
+        <label class="form-control-label text-info translate" data-key="station" for="substation-list">Substation Name</label>
+        <select class="form-control form-control-sm" id="subsation-list" name="station_id">
+            <option value=""></option>
+            {% for station in stations %}
+                <option value="{{station.id}}">{{station.station}}</option>
+            {% endfor %}
+        </select>             
+    </div>
+    <!-- Feeder selection drop-down list -->	    
+    <div class="form-group text-center">
+        <label class="form-control-label text-info translate" data-key="feeder" for="feeder-list">Feeder Name</label>
+        <select class="form-control form-control-sm" id="feeder-list" name="feeder_id">
+            <option value=""></option>
+            {% for feeder in feeders %}
+                <option value="{{feeder.id}}">{{feeder.feeder}}</option>
+            {% endfor %}
+        </select>             
+    </div>
+    <!-- Editor Name -->
+    <div class="form-group text-center">
+        <label class="form-control-label text-info translate" data-key="editor" for="editor-name">Editor's Name</label>
+        <input  class="form-control form-control-sm" type="text" id="editor-name" name="editor">
+    </div>
+	<!-- Editing date -->
+    <div class="form-group text-center">
+        <label class="form-control-label text-info translate" data-key="e_date" for="editing-date">Date of draw</label>
+        <input class="form-control form-control-sm" type="date" id="editing-date" name="e_date">
+    </div>
+    <!-- Notes -->
+    <div class="form-group text-center">
+        <label class="form-control-label text-info translate" data-key="notes" for="input-note">Notes</label>
+        <textarea class="form-control form-control-sm" id="input-note" rows="2" name="note"></textarea>            
+    </div>
+    <!-- Submit & clear buttons -->
+    <div class="form-group text-center">
+        <button id="form-submit-button" type="Submit" class="btn btn-secondary translate" data-key="add" data-href="{{ url_for('adds') }}"> Add </button>
+        <a class="btn btn-secondary translate" data-key="rst" href="{{url_for('indexes', page_name='upload')}}" role="button">Reset</a>
+    </div>
+{% endblock %}
+
+
+{% block userMessage %}
+    {{message}}
+{% endblock %}
+
+{% block pageTitle %}
+   <h1 class="translate d-none d-lg-block d-xl-block" data-key="upload"> Uplaod</h1>
+{% endblock %}
+
+{% block tableHeader %}
+    <th class=" translate" data-key="station" scope="col">station</th>
+    <th class=" translate" data-key="feeder" scope="col">Feeder Name</th>
+    <th class=" translate" data-key="uploader" scope="col">Uploader's Name</th>     
+    <th class=" translate" data-key="u_date" scope="col">Upload date</th>
+    <th class=" translate" data-key="editor" scope="col">Updator's Name</th>    
+    <th class=" translate" data-key="e_date" scope="col">Updating date</th>        
+    <th class=" translate" data-key="notes" scope="col">Notes</th>
+    <th></th>  
+{% endblock %}
+
+
+{% block tableBody %}
+        {% for file in files %}
+          <tr class="text-center">
+            <td>{{file.station.station}}</td>
+            <td>{{file.feeder.feeder}}</td>
+            <td>{{file.uploader.name}}</td>
+            <td>{{file.creationDate.strftime('%Y-%m-%d')}}</td>
+            <td>{{file.updator}}</td>
+            <td>{{file.updatingDate.strftime('%Y-%m-%d')}}</td>
+            <td>{{file.note}}</td>
+            <td><a class="btn btn-outline-info translate" data-key="review" role="button" href="{{url_for('download', page_name='upload', filename=file.name)}}">Open</a></td>
+          </tr> 
+      {% endfor %}
+{% endblock %}  

@@ -1,0 +1,75 @@
+{% extends "layout.html" %}
+
+{% block pageInfo %}
+	<!-- hidden fields used for javascript -->
+	<!-- This span used to store static page name to be used for the javascript dictionary -->
+	<span id="page-name" style="display: none">feeders</span>
+	  <!-- This span used to store static privilege (True or false) to be used to hide page access in nav bar -->
+  	<span id="has-privilege" style="display: none">{{has_privilege}}</span>
+	<!-- This span used to store language displayed to user -->
+  	<span id="page-language" style="display: none">{{language}}</span>
+{% endblock %}
+
+
+{% block formBody %}
+	<!-- hidden fields (Database ID) to be used by flask for updating users-->
+	<div style="display: none">
+	    <label class="form-control-label text-info mb-2" for="admin-databseId">ID</label>
+	    <input type="text" class="form-control" id="admin-databseId" name="databaseId" >
+	</div>
+	<!-- hidden fields (page name) to be used by flask for knowing the requesting page -->
+	<div style="display: none">
+	    <label class="form-control-label text-info mb-2" for="page-name">Page Name</label>
+	    <input type="text" class="form-control" id="page-name" name="page_name" value="admin_feeders">
+	</div>
+	<!-- Feeder Name -->
+    <div class="form-group text-center">
+	    <label class="form-control-label text-info mb-2 translate" data-key="feeder" for="feeder-feeder-name">Feeder Name</label>
+	    <input type="text" class="form-control" id="feeder-feeder-name" name="feeder_name">
+	</div>
+	<!-- Station Name -->
+	    <div class="form-group text-center">
+		<label class="form-control-label text-info mb-2 translate" data-key="station" for="feeder-station-name">Station Name</label>
+		<select class="form-control" id="feeder-station-name" name="station_id">
+			<option value=""></option>
+			{% for station in stations %}
+			    <option value="{{station.id}}">{{station.station}}</option>
+		    {% endfor %}
+		</select>             
+	</div>
+	<!-- Save buttons -->
+    <div class="form-group text-center">
+	    <button id="form-submit-button" type="submit" class="btn btn-secondary mt-4 translate" data-key="add" data-href="{{ url_for('adds') }}"> Add </button>
+		<a class="btn btn-secondary mt-4 translate" data-key="rst" href="{{url_for('indexes',page_name='admin_feeders')}}" role="button">Reset</a>
+	</div>
+{% endblock %}
+
+
+{% block userMessage %}
+	 {{message}}
+{% endblock %}
+
+{% block pageTitle %}
+	 <h1 class="translate d-none d-lg-block d-xl-block" data-key="feeders_btn"> Feeders</h1>
+{% endblock %}
+
+{% block tableHeader %}
+    <th scope="col" style="display: none">ID</th>
+    <th class="translate" data-key="feeder" scope="col">Feeder Name</th>
+    <th class="translate" data-key="station" scope="col">Station Name</th>    
+    <th></th>	
+    <th></th>				        
+{% endblock %} 
+
+
+{% block tableBody %}
+	{% for feeder in feeders %}
+	  	<tr class="text-center">
+		  	<td style="display: none">{{feeder.id}}</td>
+	        <td>{{feeder.feeder}}</td>
+	        <td>{{feeder.station.station}}</td> 				        
+	        <td><button type="button" class="btn btn-outline-info row-edit-button translate" data-key="edit" data-href="{{ url_for('updates') }}">Edit</button></td>  
+	        <td><button type="button" class="btn btn-outline-info row-delete-button translate" data-key="del" data-href="{{ url_for('deletes', page_name='admin_feeders', db_id=feeder.id) }}" data-messageBody="Are you sure you want to delete feeder &#147 {{feeder.feeder}} &#148 ?" data-messageTitle="Confirm Deletion" data-messageCancel="Cancel" data-messageContinue="Confirm" role="button" data-toggle="modal" data-backdrop="static" data-keyboard="false" data-target="#modal">Delete</button></td>
+	    </tr>
+    {% endfor %}       
+{% endblock %} 
