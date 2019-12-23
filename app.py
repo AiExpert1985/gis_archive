@@ -2,7 +2,7 @@ import os, random, string
 from flask import Flask, render_template, request, redirect, url_for, send_from_directory, session
 from models import *
 
-UPLOAD_FOLDER = '/Feeders_archive/upload'
+UPLOAD_FOLDER = './upload'
 ALLOWED_EXTENSIONS = set(['pdf', 'png', 'jpg', 'jpeg', 'gif'])
 
 # ADDING SECRET KEY USED BY session object
@@ -171,7 +171,7 @@ addDic = {
 					'feeder_id': 'request.form.get("feeder_id")',
 					'uploader_id': '(Uploader.query.filter(and_(Uploader.userId == session["USER_NAME"], Uploader.password == session["PASSWORD"])).first()).id',
 					'updator': 'request.form.get("editor")',
-					'updatingDate': 'request.form.get("e_date")',
+					'updatingDate': 'datetime.strptime(request.form.get("e_date"), "%Y-%m-%d")', # SQLite showed error when inserting date directly from HTML form, so I used the python date to overcome this issue
 					'note': 'request.form.get("note")'},
 			"db_query": 'File(**kwQuery)'}
 }
@@ -181,7 +181,7 @@ def adds():
 	if not registered() or not has_privilege():
 		return redirect(url_for("login"))
 	page_name = request.form.get("page_name")
-	language=session["LANGUAGE"]
+	language = session["LANGUAGE"]
 	# some checks for the upload page
 	if page_name == "upload":
 		filename = processFile(request, language, page_name)
